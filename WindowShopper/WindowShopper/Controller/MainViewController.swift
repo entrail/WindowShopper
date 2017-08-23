@@ -12,10 +12,12 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var wageTxt: CurrencyTextField!
     @IBOutlet weak var priceTxt: CurrencyTextField!
+    @IBOutlet weak var labelDaysToWork: UILabel!
+    @IBOutlet weak var labelHours: UILabel!
     
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+       super.viewDidLoad()
         
         let calcBtn = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 60))
         calcBtn.backgroundColor = UIColor.orange
@@ -26,12 +28,33 @@ class MainViewController: UIViewController {
         
         wageTxt.inputAccessoryView = calcBtn
         priceTxt.inputAccessoryView = calcBtn
+        
+        resetView()
        
     }
 
     @objc func calculate() {
-        print("hier!")
+        if let wageTxt = wageTxt.text, let priceTxt = priceTxt.text {
+            if let wage = Double(wageTxt), let price = Double(priceTxt) {
+                view.endEditing(true)
+                labelDaysToWork.isHidden = false
+                labelHours.isHidden = false
+                labelDaysToWork.text = "\( Wage.getHours(forWage: wage, andPrice: price))"
+            }
+        }
     }
-
+    
+    
+    @IBAction func clearCalculatorButtonPressed(_ sender: Any) {
+        resetView()
+    }
+    
+    func resetView() {
+        labelDaysToWork.isHidden = true
+        labelHours.isHidden = true
+        wageTxt.text = ""
+        priceTxt.text = ""
+    }
+    
 }
 
